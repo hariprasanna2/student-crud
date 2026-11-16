@@ -3,10 +3,12 @@ package com.example.studentcrud.service;
 import com.example.studentcrud.entity.Student;
 import com.example.studentcrud.repository.StudentRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class StudentService {
 
     private final StudentRepository repository;
@@ -16,7 +18,9 @@ public class StudentService {
     }
 
     // CREATE
+    @Transactional
     public Student saveStudent(Student student) {
+        student.setId(null);
         return repository.save(student);
     }
 
@@ -29,10 +33,11 @@ public class StudentService {
     public Student getStudentById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Student not found"));
+                        new StudentNotFoundException(id));
     }
 
     // UPDATE
+    @Transactional
     public Student updateStudent(Long id, Student student) {
 
         Student existing = getStudentById(id);
@@ -45,6 +50,7 @@ public class StudentService {
     }
 
     // DELETE
+    @Transactional
     public void deleteStudent(Long id) {
         Student existing = getStudentById(id);
         repository.delete(existing);
