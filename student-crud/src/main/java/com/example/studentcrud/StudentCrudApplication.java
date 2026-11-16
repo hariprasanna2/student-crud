@@ -1,4 +1,4 @@
-package com.example.student_crud;
+package com.example.studentcrud;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
